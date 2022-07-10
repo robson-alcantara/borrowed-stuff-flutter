@@ -10,11 +10,11 @@ class StuffCard extends StatelessWidget {
   final Function onEdit;
   final Function onDelete;
 
-  StuffCard({
-    Key key,
-    this.stuff,
-    this.onEdit,
-    this.onDelete,
+  const StuffCard({
+    required Key? key,
+    required this.stuff,
+    required this.onEdit,
+    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -25,14 +25,14 @@ class StuffCard extends StatelessWidget {
   _buildStuffCard(Stuff stuff) {
     return Card(
       child: ListTile(
-        title: Text(stuff.description),
-        subtitle: Text(stuff.contactName),
+        title: Text(stuff.description!),
+        subtitle: Text(stuff.contactName!),
         leading: CircleAvatar(
           child: stuff.photoExist
               ? null
-              : Text('${stuff.description.toUpperCase()[0]}'),
+              : Text('${stuff.description?.toUpperCase()[0]}'),
           backgroundImage:
-              stuff.photoExist ? FileImage(File(stuff.photoPath)) : null,
+              stuff.photoExist ? FileImage(File(stuff.photoPath!)) : null,
         ),
         trailing: Text(stuff.loadDateString),
       ),
@@ -41,21 +41,21 @@ class StuffCard extends StatelessWidget {
 
   _buildSlidableStuffCard() {
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
+      actionPane: const SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
       child: _buildStuffCard(stuff),
-      actions: <Widget>[
+      actions: const <Widget>[
         IconSlideAction(
           caption: 'Editar',
           color: Colors.blue,
           icon: Icons.edit,
-          onTap: onEdit,
+          //onTap: onEdit, ///TODO: ativar código
         ),
         IconSlideAction(
           caption: 'Excluir',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: onDelete,
+          //onTap: onDelete, ///TODO: ativar código
         ),
       ],
     );

@@ -17,14 +17,14 @@ class MyApp extends StatelessWidget {
       title: 'Emprestei?',
       theme: _buildTheme(),
       home: HomePage(),
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('pt', 'BR'),
-        const Locale('en', 'US'),
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+        Locale('en', 'US'),
       ],
     );
   }
@@ -33,9 +33,7 @@ class MyApp extends StatelessWidget {
   _buildTheme() {
     return ThemeData(
       brightness: Brightness.dark,
-      primaryColor: Color(0xFF212121),
-      accentColor: Colors.deepOrange,
-      primarySwatch: Colors.deepOrange,
+      primaryColor: const Color(0xFF212121), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange).copyWith(secondary: Colors.deepOrange),
     );
   }
 }

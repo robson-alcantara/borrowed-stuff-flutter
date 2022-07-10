@@ -8,10 +8,10 @@ import 'package:borrowed_stuff/components/photo_container.dart';
 import 'package:borrowed_stuff/models/stuff.dart';
 
 class StuffDetailPage extends StatefulWidget {
-  final Stuff editedStuff;
+  final Stuff? editedStuff;
 
-  StuffDetailPage({
-    Key key,
+  const StuffDetailPage({
+    Key? key,
     this.editedStuff,
   }) : super(key: key);
 
@@ -32,10 +32,10 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
   void initState() {
     super.initState();
     if (widget.editedStuff != null) {
-      _currentStuff = Stuff.fromMap(widget.editedStuff.toMap());
-      _dateController.text = _dateFormat.format(_currentStuff.loanDate);
-      _descriptionController.text = _currentStuff.description;
-      _nameController.text = _currentStuff.contactName;
+      _currentStuff = Stuff.fromMap(widget.editedStuff!.toMap())!;
+      _dateController.text = _dateFormat.format(_currentStuff.loanDate!);
+      _descriptionController.text = _currentStuff.description!;
+      _nameController.text = _currentStuff.contactName!;
     }
   }
 
@@ -50,7 +50,11 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onBackPressed,
+      onWillPop: () async {
+        bool? result = await _onBackPressed();
+        result ??= false;
+        return result;
+      },
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.editedStuff == null
@@ -62,27 +66,26 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
     );
   }
 
-  Future<bool> _onBackPressed() {
+  Future<bool>? _onBackPressed() {
     return showDialog(
-          context: context,
-          builder: (context) {
-            return BackDialog(
-              onConfirm: () => Navigator.of(context).pop(false),
-              onCancel: () => Navigator.of(context).pop(true),
-            );
-          },
-        ) ??
-        false;
+      context: context,
+      builder: (context) {
+        return BackDialog(
+          onConfirm: () => Navigator.of(context).pop(false),
+          onCancel: () => Navigator.of(context).pop(true),
+        );
+      },
+    ).then((value) => value ?? false);
   }
 
   _buildForm() {
     return Form(
       key: _formKey,
       child: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: <Widget>[
           PhotoContainer(
-            initialPhotoPath: _currentStuff.photoPath,
+            initialPhotoPath: _currentStuff.photoPath!,
             onChanged: (path) {
               _currentStuff.photoPath = path;
             },
@@ -98,7 +101,7 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
 
   _buildDateInputField() {
     return DateTimeField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         icon: Icon(Icons.date_range),
         labelText: 'Data do empréstimo',
       ),
@@ -117,14 +120,14 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
         _currentStuff.loanDate = date;
       },
       validator: (date) {
-        return Validator.isEmptyDate(date);
+        return Validator.isEmptyDate(date!);
       },
     );
   }
 
-  _buildDescriptionInputField({Function(String) onSaved}) {
+  _buildDescriptionInputField({Function(String)? onSaved}) {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         icon: Icon(Icons.description),
         labelText: 'Descrição do objeto emprestado',
       ),
@@ -135,14 +138,14 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
       },
       controller: _descriptionController,
       validator: (value) {
-        return Validator.isEmptyText(value);
+        return Validator.isEmptyText(value!);
       },
     );
   }
 
-  _buildNameInputField({Function(String) onSaved}) {
+  _buildNameInputField({Function(String)? onSaved}) {
     return TextFormField(
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         icon: Icon(Icons.person),
         labelText: 'Nome do contato',
       ),
@@ -153,22 +156,22 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
       },
       controller: _nameController,
       validator: (value) {
-        return Validator.isEmptyText(value);
+        return Validator.isEmptyText(value!);
       },
     );
   }
 
   _buildConfirmButton() {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 32.0),
       child: InkWell(
         child: Container(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
           height: 50.0,
           child: Center(
             child: Text(
               widget.editedStuff == null ? 'REGISTRAR' : 'ATUALIZAR',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -176,7 +179,7 @@ class _StuffDetailPageState extends State<StuffDetailPage> {
         ),
         onTap: () {
           final form = _formKey.currentState;
-          if (form.validate()) {
+          if (form!.validate()) {
             form.save();
             Navigator.of(context).pop(_currentStuff);
           }

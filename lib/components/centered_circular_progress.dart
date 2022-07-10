@@ -5,7 +5,7 @@ class CenteredCircularProgress extends StatelessWidget {
   final double loadingSize;
   final double fontSize;
 
-  CenteredCircularProgress({
+  const CenteredCircularProgress({
     this.message = 'Carregando',
     this.loadingSize = 64.0,
     this.fontSize = 14.0,
@@ -18,10 +18,10 @@ class CenteredCircularProgress extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
+          SizedBox(
             height: loadingSize,
             width: loadingSize,
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 24.0),

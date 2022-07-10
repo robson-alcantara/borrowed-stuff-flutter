@@ -1,10 +1,10 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:borrowed_stuff/components/centered_circular_progress.dart';
 import 'package:borrowed_stuff/components/centered_message.dart';
 import 'package:borrowed_stuff/components/stuff_card.dart';
 import 'package:borrowed_stuff/controllers/home_controller.dart';
 import 'package:borrowed_stuff/models/stuff.dart';
 import 'package:borrowed_stuff/pages/sutff_detail_page.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Objetos Emprestados'),
+        title: const Text('Objetos Emprestados'),
       ),
       floatingActionButton: _buildFloatingActionButton(),
       body: _buildStuffList(),
@@ -39,19 +39,19 @@ class _HomePageState extends State<HomePage> {
 
   _buildFloatingActionButton() {
     return FloatingActionButton.extended(
-      label: Text('Emprestar'),
-      icon: Icon(Icons.add),
+      label: const Text('Emprestar'),
+      icon: const Icon(Icons.add),
       onPressed: _addStuff,
     );
   }
 
   _buildStuffList() {
     if (_loading) {
-      return CenteredCircularProgress();
+      return const CenteredCircularProgress();
     }
 
     if (_controller.stuffList.isEmpty) {
-      return CenteredMessage('Vazio', icon: Icons.warning);
+      return const CenteredMessage('Vazio', icon: Icons.warning);
     }
 
     return ListView.builder(
@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
           onEdit: () {
             _editStuff(index, stuff);
           },
+          key: null,
         );
       },
     );
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
     print('New stuff');
     final stuff = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => StuffDetailPage()),
+      MaterialPageRoute(builder: (context) => const StuffDetailPage()),
     );
 
     if (stuff != null) {
@@ -87,8 +88,8 @@ class _HomePageState extends State<HomePage> {
         title: "Novo empréstimo",
         backgroundColor: Colors.black,
         message: "${stuff.description} emprestado para ${stuff.contactName}.",
-        duration: Duration(seconds: 2),
-      )..show(context);
+        duration: const Duration(seconds: 2),
+      ).show(context);
     }
   }
 
@@ -110,8 +111,8 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.black,
         message:
             "${editedStuff.description} emprestado para ${editedStuff.contactName}.",
-        duration: Duration(seconds: 2),
-      )..show(context);
+        duration: const Duration(seconds: 2),
+      ).show(context);
     }
   }
 
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage> {
       title: "Exclusão",
       backgroundColor: Colors.red,
       message: "${stuff.description} excluido com sucesso.",
-      duration: Duration(seconds: 2),
-    )..show(context);
+      duration: const Duration(seconds: 2),
+    ).show(context);
   }
 }

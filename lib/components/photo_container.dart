@@ -8,31 +8,32 @@ class PhotoContainer extends StatefulWidget {
   final Function(String) onChanged;
   final String initialPhotoPath;
 
-  PhotoContainer({this.initialPhotoPath, this.height = 180.0, this.onChanged});
+  const PhotoContainer(
+      {required this.initialPhotoPath,
+      this.height = 180.0,
+      required this.onChanged});
 
   @override
   _PhotoContainerState createState() => _PhotoContainerState();
 }
 
 class _PhotoContainerState extends State<PhotoContainer> {
-  File _image;
+  late File _image;
+  late ImagePicker imagePicker;
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await imagePicker.getImage(source: ImageSource.camera);
 
     setState(() {
-      _image = image;
-      if (widget.onChanged != null) {
-        widget.onChanged(image.path ?? '');
-      }
+      _image = File(image!.path);
+      widget.onChanged(image.path ?? '');
     });
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialPhotoPath != null)
-      _image = File(widget.initialPhotoPath);
+ _image = File(widget.initialPhotoPath);
   }
 
   @override
@@ -51,7 +52,7 @@ class _PhotoContainerState extends State<PhotoContainer> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
-              child: _image == null ? Text('Sem foto.') : Image.file(_image),
+              child: _image == null ? const Text('Sem foto.') : Image.file(_image),
             ),
           ),
         ),
