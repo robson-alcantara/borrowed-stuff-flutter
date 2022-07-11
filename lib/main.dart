@@ -32,8 +32,10 @@ class MyApp extends StatelessWidget {
   // Ciando um tema para o projeto
   _buildTheme() {
     return ThemeData(
-      brightness: Brightness.dark,
-      primaryColor: const Color(0xFF212121), colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange).copyWith(secondary: Colors.deepOrange),
+      //brightness: Brightness.dark,
+      primaryColor: const Color(0xFF212121),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange)
+          .copyWith(secondary: Colors.deepOrange),
     );
   }
 }
